@@ -137,8 +137,6 @@ if __name__ == '__main__':
 
     current_release = readRelease('Release.json')
     release_changes = parseMessage(message)
-    # print(current_release)
-    # print(release_changes)
 
     # for header in test_header_list:
     release_type = parseHeader(header)
