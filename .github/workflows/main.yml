@@ -1,0 +1,45 @@
+name: Create Release
+
+on:
+  push:
+    branches: master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[ci skip]')"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: '3.x'
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::$(python ReleaseTools.py github.event.head_commit.message)        
+      - name: Generate Changelog
+        if: "contains(steps.get_version.outputs.VERSION, 'v')"
+        run: |
+          python Scripts/GenerateRelease.py CHANGELOG.txt
+      - name: Commit Changelog and Tag
+        if: "contains(steps.get_version.outputs.VERSION, 'v')"
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add Release.json
+          git commit -m "Update Release file [ci skip]" -a || true
+          git tag ${{ steps.get_version.outputs.VERSION }}
+      - name: Push changes
+        if: "contains(steps.get_version.outputs.VERSION, 'v')"
+        uses: ad-m/github-push-action@master
+        with:
+          tags: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Release ${{ steps.get_version.outputs.VERSION }}
+        if: "contains(steps.get_version.outputs.VERSION, 'v')"
+        uses: softprops/action-gh-release@v1
+        with:
+          body_path: CHANGELOG.txt
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
