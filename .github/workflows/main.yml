@@ -46,7 +46,8 @@ jobs:
         if: "contains(steps.get_version.outputs.VERSION, 'v')"
         uses: softprops/action-gh-release@v1
         with:
-          name: Release ${{ steps.get_version.outputs.VERSION }}
+          name: Playground -  ${{ steps.get_version.outputs.VERSION }}
           body_path: CHANGELOG.txt
+          tag_name: ${{ steps.get_version.outputs.VERSION }} 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
