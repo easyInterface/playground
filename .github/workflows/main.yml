@@ -20,7 +20,9 @@ jobs:
           pip install -r requirements.txt
       - name: Get the version
         id: get_version
-        run: echo ::set-output name=VERSION::$(python ReleaseTools.py ${{ github.event.head_commit.message }})        
+        run: |
+          echo ${{ github.event.head_commit.message }} >> message.txt
+          echo ::set-output name=VERSION::$(python ReleaseTools.py message.txt)        
       - name: Generate Changelog
         if: "contains(steps.get_version.outputs.VERSION, 'v')"
         run: |
