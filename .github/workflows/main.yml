@@ -27,7 +27,7 @@ jobs:
       - name: Generate Changelog
         if: "contains(steps.get_version.outputs.VERSION, 'v')"
         run: |
-          python Scripts/GenerateRelease.py CHANGELOG.txt
+          python GenerateRelease.py CHANGELOG.txt
       - name: Commit Changelog and Tag
         if: "contains(steps.get_version.outputs.VERSION, 'v')"
         run: |
