@@ -134,8 +134,14 @@ if __name__ == '__main__':
     # test_header_list = [' Blah blah blah [release major]']
     # test_message = 'Who what where'
 
-    header = sys.argv[1]
-    message = sys.argv[2]
+
+    message_full = sys.argv[1]
+    try:
+        header, message = message_full.split('\n\n', 1)
+    except ValueError:
+        # We do not have a message body
+        sys.stdout.write('')
+        sys.exit(0)
 
     current_release = readRelease('Release.json')
     release_changes = parseMessage(message)
@@ -150,7 +156,7 @@ if __name__ == '__main__':
         new_release['version'] = createVersion(new_release, release_type)
         new_release['date'] = datetime.now().strftime('%d %b %Y')
         sys.stdout.write('v{}'.format(new_release['version']))
-        saveRelease('NewRelease.json', new_release)
+        saveRelease('Release.json', new_release)
     else:
         # We are not performing a release
         sys.stdout.write('')

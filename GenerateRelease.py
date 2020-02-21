@@ -37,5 +37,5 @@ if __name__ == '__main__':
 
     file_name = sys.argv[1]
     BasicFunctions.printTitle('Writing changelog - {}'.format(file_name))
-    createReleaseNotes(os.path.join('easyInterface', 'Release.json'), file_name)
+    createReleaseNotes(os.path.join('Release.json'), file_name)
 
