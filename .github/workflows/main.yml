@@ -21,12 +21,13 @@ jobs:
       - name: Get the version
         id: get_version
         run: |
-          echo ${{ github.event.head_commit.message }} >> message.txt
+          echo "${{ github.event.head_commit.message }}" >> message.txt
+          cat message.txt
           echo ::set-output name=VERSION::$(python ReleaseTools.py message.txt)        
       - name: Generate Changelog
         if: "contains(steps.get_version.outputs.VERSION, 'v')"
         run: |
-          python Scripts/GenerateRelease.py CHANGELOG.txt
+          python GenerateRelease.py CHANGELOG.txt
       - name: Commit Changelog and Tag
         if: "contains(steps.get_version.outputs.VERSION, 'v')"
         run: |
@@ -45,7 +46,8 @@ jobs:
         if: "contains(steps.get_version.outputs.VERSION, 'v')"
         uses: softprops/action-gh-release@v1
         with:
-          name: Release ${{ steps.get_version.outputs.VERSION }}
+          name: Playground -  ${{ steps.get_version.outputs.VERSION }}
           body_path: CHANGELOG.txt
+          tag_name: ${{ steps.get_version.outputs.VERSION }} 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
