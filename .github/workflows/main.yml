@@ -20,7 +20,7 @@ jobs:
           pip install -r requirements.txt
       - name: Get the version
         id: get_version
-        run: echo ::set-output name=VERSION::$(python ReleaseTools.py github.event.head_commit.message)        
+        run: echo ::set-output name=VERSION::$(python ReleaseTools.py ${{ github.event.head_commit.message }})        
       - name: Generate Changelog
         if: "contains(steps.get_version.outputs.VERSION, 'v')"
         run: |
@@ -39,10 +39,11 @@ jobs:
         with:
           tags: true
           github_token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Release ${{ steps.get_version.outputs.VERSION }}
+      - name: Release
         if: "contains(steps.get_version.outputs.VERSION, 'v')"
         uses: softprops/action-gh-release@v1
         with:
+          name: Release ${{ steps.get_version.outputs.VERSION }}
           body_path: CHANGELOG.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
