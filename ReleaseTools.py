@@ -70,7 +70,7 @@ def parseMessage(message: str) -> dict:
                         if '::' in change:
                             break
                         out[ident].append(change)
-                if ident in out.keys():
+                elif ident in out.keys():
                     out[ident] = info
                 else:
                     print('Unknown option: {}'.format(ident))
