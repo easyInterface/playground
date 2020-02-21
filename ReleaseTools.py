@@ -127,14 +127,6 @@ def parseHeader(header: str) -> Union[str, None]:
 
 if __name__ == '__main__':
 
-    # test_header_list = ['Testing [release major]', 'Testing [release minor]', 'Testing [release patch]',
-    #                     'Testing [prerelease]', 'Testing [build]', 'Testing']
-    # test_message = 'comments::The latest and greatest\nurl::\nchanges::\nChange 1\nChange2'
-
-    # test_header_list = [' Blah blah blah [release major]']
-    # test_message = 'Who what where'
-
-
     message_full = sys.argv[1]
     try:
         header, message = message_full.split('\n\n', 1)
