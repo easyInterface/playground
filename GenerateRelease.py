@@ -23,11 +23,13 @@ def getReleaseInfo(file_path):
 
 def createReleaseNotes(release_file_path, save_file='CHANGELOG.txt'):
     release_info = getReleaseInfo(release_file_path)
-    release_body = '# {} - v{}\n'.format(release_info['name'], release_info['version'])
-    release_body += '\n'
-    release_body += '{}\n'.format(release_info['comments'])
+    # release_body = '# {} - v{}\n'.format(release_info['name'], release_info['version'])
+    # release_body += '\n'
+    release_body = '{}\n'.format(release_info['comments'])
     release_body += '\n'
     for feature in release_info['changes']:
+        if feature == '':
+            continue
         release_body += '* {}\n'.format(feature)
     with open(save_file, 'w') as file_writer:
         file_writer.write(release_body)
