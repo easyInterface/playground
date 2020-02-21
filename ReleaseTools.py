@@ -126,9 +126,9 @@ def parseHeader(header: str) -> Union[str, None]:
 
 
 if __name__ == '__main__':
-
-    message_full = sys.argv[1]
     try:
+        with open(sys.argv[1], 'r') as reader:
+            message_full = reader.read()
         header, message = message_full.split('\n\n', 1)
     except ValueError:
         # We do not have a message body
